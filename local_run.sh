@@ -155,5 +155,5 @@ case $1 in
     ;;
 esac
 
-mv data/metadata data/network_config
+mv data/metadata data/network_configs
 echo "*** The new genesis data are located in the path of \"$(pwd)/data\" !! ***"
