@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-mkdir -p ~/go/bin
 export PATH="~/go/bin:${PATH}"
 
 function err_exit {
@@ -23,6 +22,7 @@ sudo apt install --no-install-recommends -y \
 
 err_exit
 
+mkdir -p ~/go/bin
 git submodule update --init --recursive \
     && cd eth2-testnet-genesis \
     && go install . \
@@ -33,6 +33,7 @@ git submodule update --init --recursive \
 err_exit
 
 cd apps/el-gen \
+    && rm -rf .venv \
     && python3 -m venv .venv \
     && cd ../.. \
     && apps/el-gen/.venv/bin/pip3 install -r apps/el-gen/requirements.txt

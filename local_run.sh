@@ -2,8 +2,9 @@
 
 rm -rf data
 
-source defaults.env
+export PATH="~/go/bin:${PATH}"
 
+source defaults.env
 if [ -f custom.env ];
 then
     source custom.env
@@ -31,9 +32,10 @@ gen_el_config(){
         tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
         mkdir -p data/metadata
         envsubst < config/el/genesis-config.yaml > $tmp_dir/genesis-config.yaml
-        python3 apps/el-gen/genesis_geth.py $tmp_dir/genesis-config.yaml      > data/metadata/genesis.json
-        python3 apps/el-gen/genesis_chainspec.py $tmp_dir/genesis-config.yaml > data/metadata/chainspec.json
-        python3 apps/el-gen/genesis_besu.py $tmp_dir/genesis-config.yaml > data/metadata/besu.json
+        python3 apps/el-gen/genesis_geth.py $tmp_dir/genesis-config.yaml \
+			> data/metadata/genesis.json || exit 1
+        python3 apps/el-gen/genesis_chainspec.py $tmp_dir/genesis-config.yaml \
+			> data/metadata/chainspec.json || exit 1
     else
         echo "el genesis already exists. skipping generation..."
     fi
@@ -120,8 +122,8 @@ gen_cl_config(){
           --preset-deneb $PRESET_BASE
           data/metadata/genesis.ssz
         )
-        /usr/local/bin/eth2-testnet-genesis "${genesis_args[@]}"
-        /usr/local/bin/zcli "${zcli_args[@]}" > data/parsed/parsedConsensusGenesis.json
+        eth2-testnet-genesis "${genesis_args[@]}" || exit 1
+        zcli "${zcli_args[@]}" > data/parsed/parsedConsensusGenesis.json || exit 1
         echo "Genesis args: ${genesis_args[@]}"
         echo "Genesis block number: $(jq -r '.latest_execution_payload_header.block_number' data/parsed/parsedConsensusGenesis.json)"
         echo "Genesis block hash: $(jq -r '.latest_execution_payload_header.block_hash' data/parsed/parsedConsensusGenesis.json)"
