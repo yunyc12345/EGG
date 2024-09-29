@@ -11,7 +11,7 @@ os_entry_cnt=$(grep -Eic "(ubuntu)|(debian)|(fedora)" /etc/os-release)
 err_exit
 
 if [[ 0 -eq $os_entry_cnt ]]; then
-    echo "!!! Only ubuntu or debian is supported!"
+    echo "!!! Only Ubuntu or Debian or Fedora Linux is supported!"
     exit 1
 fi
 
@@ -28,16 +28,13 @@ err_exit
 
 mkdir -p ~/go/bin
 git submodule update --init --recursive \
-    && cd eth2-testnet-genesis \
-    && go install . \
-    && go install github.com/protolambda/eth2-val-tools@latest \
-    && go install github.com/protolambda/zcli@latest \
-    && cd ..
+    && cd eth2-testnet-genesis && go install . && cd .. \
+    && cd eth2-val-tools && go install . && cd .. \
+    && cd zcli && go install . && cd ..
 
 err_exit
 
-cd apps/el-gen \
-    && rm -rf .venv \
+cd apps/el-gen \ # && rm -rf .venv \
     && python3 -m venv .venv \
     && cd ../.. \
     && apps/el-gen/.venv/bin/pip3 install -r apps/el-gen/requirements.txt

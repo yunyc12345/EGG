@@ -1,3 +1,9 @@
 [submodule "eth2-testnet-genesis"]
 	path = eth2-testnet-genesis
-	url = https://github.com/protolambda/eth2-testnet-genesis.git
+	url = https://github.com/nbnet/eth2-testnet-genesis.git
+[submodule "eth2-val-tools"]
+	path = eth2-val-tools
+	url = https://github.com/nbnet/eth2-val-tools.git
+[submodule "zcli"]
+	path = zcli
+	url = https://github.com/nbnet/zcli.git
