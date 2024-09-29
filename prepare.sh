@@ -34,7 +34,7 @@ git submodule update --init --recursive \
 
 err_exit
 
-cd apps/el-gen \ # && rm -rf .venv \
+cd apps/el-gen \
     && python3 -m venv .venv \
     && cd ../.. \
     && apps/el-gen/.venv/bin/pip3 install -r apps/el-gen/requirements.txt
