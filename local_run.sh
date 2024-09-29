@@ -5,12 +5,13 @@ rm -rf data
 export PATH="~/go/bin:${PATH}"
 
 source defaults.env
-if [ -f custom.env ];
-then
+if [ -f custom.env ]; then
     source custom.env
+else
+    source custom.env.example
 fi
 
-gen_shared_files(){
+gen_shared_files() {
     . apps/el-gen/.venv/bin/activate
     set -x
     # Shared files
@@ -25,7 +26,7 @@ gen_shared_files(){
     fi
 }
 
-gen_el_config(){
+gen_el_config() {
     . apps/el-gen/.venv/bin/activate
     set -x
     if ! [ -f "data/metadata/genesis.json" ]; then
@@ -58,7 +59,7 @@ gen_minimal_config() {
   done
 }
 
-gen_cl_config(){
+gen_cl_config() {
     . apps/el-gen/.venv/bin/activate
     set -x
     # Consensus layer: Check if genesis already exists
@@ -134,7 +135,7 @@ gen_cl_config(){
     fi
 }
 
-gen_all_config(){
+gen_all_config() {
     gen_el_config
     gen_cl_config
     gen_shared_files

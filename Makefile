@@ -5,3 +5,6 @@ build:
 
 prepare:
 	bash -x ./prepare.sh
+
+fmt:
+	find . -maxdepth 1 -type f -name "*.sh" | xargs sed -i 's/\t/    /g'
