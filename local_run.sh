@@ -32,10 +32,12 @@ gen_el_config(){
         tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
         mkdir -p data/metadata
         envsubst < config/el/genesis-config.yaml > $tmp_dir/genesis-config.yaml
-        python3 apps/el-gen/genesis_geth.py $tmp_dir/genesis-config.yaml \
-			> data/metadata/genesis.json || exit 1
-        python3 apps/el-gen/genesis_chainspec.py $tmp_dir/genesis-config.yaml \
-			> data/metadata/chainspec.json || exit 1
+        python3 apps/el-gen/genesis_geth.py \
+            $tmp_dir/genesis-config.yaml \
+            > data/metadata/genesis.json || exit 1
+        python3 apps/el-gen/genesis_chainspec.py \
+            $tmp_dir/genesis-config.yaml \
+            > data/metadata/chainspec.json || exit 1
     else
         echo "el genesis already exists. skipping generation..."
     fi
@@ -71,6 +73,7 @@ gen_cl_config(){
         envsubst < config/cl/mnemonics.yaml > $tmp_dir/mnemonics.yaml
         # Conditionally override values if preset is "minimal"
         if [[ "$PRESET_BASE" == "minimal" ]]; then
+          sed -ri 's/(PRESET_BASE)\s*:\s*minimal/\1: mainnet # minimal/' data/metadata/config.yaml
           gen_minimal_config
         fi
         cp $tmp_dir/mnemonics.yaml data/metadata/mnemonics.yaml
