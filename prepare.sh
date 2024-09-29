@@ -6,19 +6,23 @@ function err_exit {
     if [[ 0 -ne $? ]]; then exit 1; fi
 }
 
-ubuntu_or_debian_entry_cnt=$(grep -Eic "(ubuntu)|(debian)" /etc/os-release)
+os_entry_cnt=$(grep -Eic "(ubuntu)|(debian)|(fedora)" /etc/os-release)
 
 err_exit
 
-if [[ 0 -eq $ubuntu_or_debian_entry_cnt ]]; then
+if [[ 0 -eq $os_entry_cnt ]]; then
     echo "!!! Only ubuntu or debian is supported!"
     exit 1
 fi
 
 sudo apt install --no-install-recommends -y \
     golang ca-certificates build-essential \
-    python3 python3-dev python3-venv python3-venv python3-pip \
-    gettext-base jq wget curl
+    python3 python3-dev python3-venv python3-pip \
+    gettext-base jq wget curl \
+    || \
+    sudo dnf install -y golang ca-certificates \
+        python3 python3-devel python3-pip \
+        make pkg-config gcc gcc-c++ kernel-devel gettext jq wget curl
 
 err_exit
 
