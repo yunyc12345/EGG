@@ -139,11 +139,6 @@ else:
         "timestamp": str(data['genesis_timestamp'])
     }
 
-    for key, value in data['el_premine'].items():
-        acct = w3.eth.account.from_mnemonic(data['mnemonic'], account_path=key, passphrase='')
-        weival = value.replace('ETH', '0' * 18)
-        out["alloc"][acct.address] = {"balance": weival}
-
     # Some hardcoded addrs
     def add_alloc_entry(addr, account):
         # Convert balance format
