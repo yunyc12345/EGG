@@ -156,5 +156,11 @@ case $1 in
     ;;
 esac
 
-mv data/metadata data/network_configs
-echo "*** The new genesis data are located in the path of \"$(pwd)/data\" !! ***"
+cd data/ || exit 1
+mv metadata genesis || exit 1
+tar -zcpf genesis.tar.gz genesis || exit 1
+cd .. || exit 1
+
+echo "*** The genesis data are located in the path of \"$(pwd)/data/\" !! ***"
+
+tree -F $(pwd)/data 2>/dev/null
