@@ -28,4 +28,4 @@ sudo apt install --no-install-recommends -y \
 
 err_exit
 
-bash -x ./prepare_minimal.sh
+bash -x ./minimal_prepare.sh

@@ -157,10 +157,23 @@ case $1 in
 esac
 
 cd data/ || exit 1
+
 mv metadata genesis || exit 1
 tar -zcpf genesis.tar.gz genesis || exit 1
+
+eth2-val-tools keystores \
+    --insecure \
+    --out-loc vcdata \
+    --source-mnemonic "$(grep -Po '(?<=mnemonic: ")["\s\w]+(?=")' genesis/mnemonics.yaml)" \
+    --source-min 0 \
+    --source-max $(grep -Po '(?<=count: )\d+' genesis/mnemonics.yaml) \
+    || exit 1
+rm -rf vcdata/{lodestar-secrets,nimbus-keys,prysm,teku-keys,teku-secrets}
+mv vcdata/keys vcdata/validators || exit 1
+tar -zcpf vcdata.tar.gz vcdata || exit 1
+
 cd .. || exit 1
 
 echo "*** The genesis data are located in the path of \"$(pwd)/data/\" !! ***"
 
-tree -F $(pwd)/data 2>/dev/null
+tree -L 2 -F $(pwd)/data 2>/dev/null
