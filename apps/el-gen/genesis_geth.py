@@ -46,8 +46,8 @@ else:
             "mergeNetsplitBlock":0,
             "terminalTotalDifficulty":0,
             "terminalTotalDifficultyPassed": True,
-            "shanghaiTime": 0,
-            "cancunTime": 0,
+            "shanghaiTime": data['shanghai_timestamp'],
+            "cancunTime": data['cancun_timestamp'],
             "depositContractAddress": data["deposit_contract_address"],
         },
         "alloc": {
